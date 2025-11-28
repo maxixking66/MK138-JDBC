@@ -1,20 +1,10 @@
 package ir.maktabsharif138.jdbc.domains;
 
-public class User {
-
-    private Integer id;
+public class User extends BaseDomain {
 
     private String username;
 
     private Integer age;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -35,7 +25,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-               "id=" + id +
+               "id=" + getId() +
                ", username='" + username + '\'' +
                ", age=" + age +
                '}';

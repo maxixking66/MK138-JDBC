@@ -1,18 +1,8 @@
 package ir.maktabsharif138.jdbc.domains;
 
-public class Tag {
-
-    private Integer id;
+public class Tag extends BaseDomain {
 
     private String name;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -25,7 +15,7 @@ public class Tag {
     @Override
     public String toString() {
         return "Tag{" +
-               "id=" + id +
+               "id=" + getId() +
                ", name='" + name + '\'' +
                '}';
     }
