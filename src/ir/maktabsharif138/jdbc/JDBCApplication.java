@@ -1,6 +1,6 @@
 package ir.maktabsharif138.jdbc;
 
-import ir.maktabsharif138.jdbc.repositories.TagRepository;
+import ir.maktabsharif138.jdbc.repositories.base.CrudRepository;
 import ir.maktabsharif138.jdbc.util.ApplicationContext;
 
 import java.sql.SQLException;
@@ -11,10 +11,10 @@ public class JDBCApplication {
 
         ApplicationContext ctx = ApplicationContext.getInstance();
 
-        TagRepository tagRepository = ctx.getTagRepository();
+        CrudRepository repository = ctx.getUserRepository();
 
-        System.out.println(tagRepository.findById(1));
-        System.out.println(tagRepository.findById(10));
+        System.out.println(repository.findById(1));
+        System.out.println(repository.findById(10));
 
 
         ctx.getConnection().close();

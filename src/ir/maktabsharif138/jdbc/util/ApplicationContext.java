@@ -2,6 +2,8 @@ package ir.maktabsharif138.jdbc.util;
 
 import ir.maktabsharif138.jdbc.repositories.TagRepository;
 import ir.maktabsharif138.jdbc.repositories.TagRepositoryImpl;
+import ir.maktabsharif138.jdbc.repositories.UserRepository;
+import ir.maktabsharif138.jdbc.repositories.UserRepositoryImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +16,8 @@ public class ApplicationContext {
     private Connection connection;
 
     private TagRepository tagRepository;
+
+    private UserRepository userRepository;
 
     private ApplicationContext() {
 
@@ -46,5 +50,12 @@ public class ApplicationContext {
             tagRepository = new TagRepositoryImpl(getConnection());
         }
         return tagRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        if (userRepository == null) {
+            userRepository = new UserRepositoryImpl(getConnection());
+        }
+        return userRepository;
     }
 }
