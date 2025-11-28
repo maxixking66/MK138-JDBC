@@ -3,8 +3,8 @@ package ir.maktabsharif138.jdbc;
 import ir.maktabsharif138.jdbc.util.ApplicationContext;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
 
 public class JDBCApplication {
@@ -15,12 +15,24 @@ public class JDBCApplication {
         ApplicationContext ctx = ApplicationContext.getInstance();
         Connection connection = ctx.getConnection();
         connection.setAutoCommit(false);
-        Statement statement = connection.createStatement();
+        PreparedStatement statement = connection.prepareStatement("update tag set name = ? where id = ?");
 
-        statement.addBatch("update tag set name = 'first' where id = 1");
-        statement.addBatch("update tag set name = 'second' where id = 2");
-        statement.addBatch("update tag set name = 'forth' where id = 4");
-        statement.addBatch("update tag set name = 'fifth' where id = 5");
+        statement.setString(1, "1");
+        statement.setInt(2, 1);
+        statement.addBatch();
+
+        statement.setString(1, "2");
+        statement.setInt(2, 2);
+        statement.addBatch();
+
+        statement.setString(1, "4");
+        statement.setInt(2, 4);
+        statement.addBatch();
+
+        statement.setString(1, "5");
+        statement.setInt(2, 5);
+        statement.addBatch();
+
         System.out.println(
                 Arrays.toString(statement.executeBatch())
         );
