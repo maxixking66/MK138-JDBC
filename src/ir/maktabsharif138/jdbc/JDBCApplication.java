@@ -15,7 +15,7 @@ public class JDBCApplication {
 
 
         Statement statement = connection.createStatement();
-        int rowsAffected = statement.executeUpdate("update users set age = 30 where id = 2");
+        int rowsAffected = statement.executeUpdate("delete from users where id = 2");
         if (rowsAffected == 1) {
             connection.commit();
         }
