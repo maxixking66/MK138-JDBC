@@ -2,21 +2,18 @@ package ir.maktabsharif138.jdbc.repositories;
 
 import ir.maktabsharif138.jdbc.domains.BaseDomain;
 import ir.maktabsharif138.jdbc.domains.User;
+import ir.maktabsharif138.jdbc.repositories.base.AbstractCrudRepository;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserRepositoryImpl implements UserRepository {
-
-    private final Connection connection;
-
-    private PreparedStatement findByIdStatement;
+public class UserRepositoryImpl extends AbstractCrudRepository
+        implements UserRepository {
 
     public UserRepositoryImpl(Connection connection) {
-        this.connection = connection;
+        super(connection);
     }
 
     @Override
@@ -27,25 +24,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public BaseDomain save(BaseDomain baseDomain) {
         return null;
-    }
-
-    @Override
-    public BaseDomain findById(Integer id) {
-        try {
-            PreparedStatement statement = getFindByIdStatement();
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                User user = new User();
-                user.setId(resultSet.getInt(1));
-                user.setUsername(resultSet.getString(2));
-                user.setAge(resultSet.getInt(3));
-                return user;
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -68,14 +46,20 @@ public class UserRepositoryImpl implements UserRepository {
         return false;
     }
 
-    private PreparedStatement getFindByIdStatement() {
-        if (findByIdStatement == null) {
-            try {
-                findByIdStatement = connection.prepareStatement("select * from users where id = ?");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+    @Override
+    protected BaseDomain getBaseDomain(ResultSet resultSet) {
+        User user = new User();
+        try {
+            user.setUsername(resultSet.getString(2));
+            user.setAge(resultSet.getInt(3));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return findByIdStatement;
+        return user;
+    }
+
+    @Override
+    public String getTableName() {
+        return "users";
     }
 }
