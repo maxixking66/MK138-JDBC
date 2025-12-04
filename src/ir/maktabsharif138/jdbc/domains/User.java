@@ -2,6 +2,11 @@ package ir.maktabsharif138.jdbc.domains;
 
 public class User extends BaseDomain {
 
+    public static final String TABLE_NAME = "tbl_users";
+
+    public static final String USERNAME_COLUMN = "username";
+    public static final String AGE_COLUMN = "age";
+
     private String username;
 
     private Integer age;
