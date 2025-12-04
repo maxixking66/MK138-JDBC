@@ -1,10 +1,9 @@
 package ir.maktabsharif138.jdbc;
 
-import ir.maktabsharif138.jdbc.domains.Tag;
-import ir.maktabsharif138.jdbc.domains.User;
-import ir.maktabsharif138.jdbc.repositories.base.CrudRepository;
 import ir.maktabsharif138.jdbc.util.ApplicationContext;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class JDBCApplication {
@@ -13,17 +12,21 @@ public class JDBCApplication {
 
         ApplicationContext ctx = ApplicationContext.getInstance();
 
-        CrudRepository repository = ctx.getUserRepository();
-        User domain = new User();
-        domain.setId(2);
-        domain.setUsername("updated username 3");
-        domain.setAge(55);
-        repository.save(domain);
+//        SQL injection
 
-        Tag tag = new Tag();
-        tag.setId(10);
-        tag.setName("updated name");
-        ctx.getTagRepository().save(tag);
+        Connection connection = ctx.getConnection();
+
+//        String userInput = "sport";
+        String userInput = "'); DROP TABLE tbl_tag; --";
+
+//        Statement statement = connection.createStatement();
+//
+//        String query = "insert into tbl_tag (name) values ('" + userInput + "')";
+
+        PreparedStatement statement = connection.prepareStatement("insert into tbl_tag (name) values (?)");
+        statement.setString(1, userInput);
+
+        statement.execute();
 
         ctx.getConnection().close();
     }
