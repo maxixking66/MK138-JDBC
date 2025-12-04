@@ -4,10 +4,9 @@ import ir.maktabsharif138.jdbc.domains.BaseDomain;
 import ir.maktabsharif138.jdbc.domains.User;
 import ir.maktabsharif138.jdbc.repositories.base.AbstractCrudRepository;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
+import java.util.Objects;
 
 public class UserRepositoryImpl extends AbstractCrudRepository
         implements UserRepository {
@@ -23,7 +22,11 @@ public class UserRepositoryImpl extends AbstractCrudRepository
 
     @Override
     public BaseDomain save(BaseDomain baseDomain) {
-        return null;
+        if (Objects.isNull(baseDomain.getId())) {
+            return insert(baseDomain);
+        } else {
+            return update(baseDomain);
+        }
     }
 
     @Override
@@ -61,5 +64,66 @@ public class UserRepositoryImpl extends AbstractCrudRepository
     @Override
     public String getTableName() {
         return "users";
+    }
+
+    private PreparedStatement insertStatement;
+    private PreparedStatement updateStatement;
+
+    private BaseDomain insert(BaseDomain baseDomain) {
+        User user = (User) baseDomain;
+        PreparedStatement statement = getInsertStatement();
+        try {
+            statement.setString(1, user.getUsername());
+            statement.setInt(2, user.getAge());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+
+    private BaseDomain update(BaseDomain baseDomain) {
+        User user = (User) baseDomain;
+        PreparedStatement statement = getUpdateStatement();
+        try {
+            statement.setString(1, user.getUsername());
+            statement.setInt(2, user.getAge());
+            statement.setInt(3, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+
+    public PreparedStatement getInsertStatement() {
+        if (insertStatement == null) {
+            try {
+                insertStatement = connection.prepareStatement(
+                        "insert into users (username, age) values (?, ?)",
+                        Statement.RETURN_GENERATED_KEYS
+                );
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return insertStatement;
+    }
+
+    public PreparedStatement getUpdateStatement() {
+        if (updateStatement == null) {
+            try {
+                updateStatement = connection.prepareStatement(
+                        "update users set username = ?, age = ? where id = ?"
+                );
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return updateStatement;
     }
 }
