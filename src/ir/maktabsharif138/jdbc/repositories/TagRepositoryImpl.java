@@ -71,4 +71,18 @@ public class TagRepositoryImpl extends AbstractCrudRepository implements TagRepo
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    protected String[] getUpdateColumns() {
+        return getInsertColumns();
+    }
+
+    @Override
+    protected void fillPreparedStatementForUpdate(BaseDomain baseDomain) {
+        try {
+            updateStatement.setString(1, ((Tag) baseDomain).getName());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

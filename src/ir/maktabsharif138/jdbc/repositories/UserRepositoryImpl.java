@@ -75,4 +75,19 @@ public class UserRepositoryImpl extends AbstractCrudRepository
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    protected String[] getUpdateColumns() {
+        return getInsertColumns();
+    }
+
+    @Override
+    protected void fillPreparedStatementForUpdate(BaseDomain baseDomain) {
+        try {
+            updateStatement.setString(1, ((User) baseDomain).getUsername());
+            updateStatement.setInt(2, ((User) baseDomain).getAge());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

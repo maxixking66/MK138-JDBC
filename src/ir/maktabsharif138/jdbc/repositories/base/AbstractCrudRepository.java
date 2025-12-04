@@ -16,6 +16,8 @@ public abstract class AbstractCrudRepository implements CrudRepository {
 
     protected PreparedStatement insertStatement;
 
+    protected PreparedStatement updateStatement;
+
     protected AbstractCrudRepository(Connection connection) {
         this.connection = connection;
     }
@@ -73,16 +75,15 @@ public abstract class AbstractCrudRepository implements CrudRepository {
     }
 
     private BaseDomain update(BaseDomain baseDomain) {
-//        Tag tag = (Tag) baseDomain;
-//        PreparedStatement statement = getUpdateStatement();
-//        try {
-//            statement.setString(1, tag.getName());
-//            statement.setInt(2, tag.getId());
-//            statement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-        return null;
+        PreparedStatement statement = getUpdateStatement();
+        try {
+            fillPreparedStatementForUpdate(baseDomain);
+            statement.setInt(getUpdateColumns().length + 1, baseDomain.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return baseDomain;
     }
 
     protected PreparedStatement getInsertStatement() {
@@ -103,13 +104,25 @@ public abstract class AbstractCrudRepository implements CrudRepository {
         return insertStatement;
     }
 
-    protected String generateMarkQuestionsForInsert() {
-        String[] insertColumns = getInsertColumns();
-        String[] questionMarks = new String[insertColumns.length];
-        for (int i = 0; i < insertColumns.length; i++) {
-            questionMarks[i] = "?";
+    protected PreparedStatement getUpdateStatement() {
+        if (Objects.isNull(updateStatement)) {
+            try {
+                String[] updateColumns = getUpdateColumns();
+
+                String[] util = new String[updateColumns.length];
+                for (int i = 0; i < updateColumns.length; i++) {
+                    util[i] = updateColumns[i].concat(" = ?");
+                }
+
+                updateStatement = connection.prepareStatement(
+                        "update " + getTableName() + " set " + String.join(QUERY_DELIMITER, util) + " where id = ?",
+                        Statement.RETURN_GENERATED_KEYS
+                );
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-        return String.join(QUERY_DELIMITER, questionMarks);
+        return updateStatement;
     }
 
     protected abstract BaseDomain getBaseDomain(ResultSet resultSet);
@@ -119,4 +132,8 @@ public abstract class AbstractCrudRepository implements CrudRepository {
     protected abstract String[] getInsertColumns();
 
     protected abstract void fillPreparedStatementForInsert(BaseDomain baseDomain);
+
+    protected abstract String[] getUpdateColumns();
+
+    protected abstract void fillPreparedStatementForUpdate(BaseDomain baseDomain);
 }
