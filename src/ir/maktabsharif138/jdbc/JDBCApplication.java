@@ -1,24 +1,26 @@
 package ir.maktabsharif138.jdbc;
 
-import java.util.Scanner;
-
 public class JDBCApplication {
 
     static void main() {
-        Scanner scanner = new Scanner(System.in);
 
-        int first = scanner.nextInt();
-        int second = scanner.nextInt();
+        MyObject o = new MyObject();
 
-        try {
-            divide(first, second);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            System.out.println("handling exception, can not divide by zero, message: " + e.getMessage());
-        }
+        a(o);
 
-        System.out.println("end");
+    }
 
+    private static void a(MyObject o) {
+        b(o);
+    }
+
+    private static void b(MyObject o) {
+        c(o);
+    }
+
+    private static void c(MyObject o) {
+        throw o.ex;
+//        throw new RuntimeException();
     }
 
     private static void divide(int first, int second) {
@@ -26,5 +28,13 @@ public class JDBCApplication {
             throw new IllegalArgumentException("my custom message");
         }
         System.out.println(first / second);
+    }
+
+    static class MyObject {
+        RuntimeException ex;
+
+        MyObject() {
+            ex = new RuntimeException();
+        }
     }
 }
