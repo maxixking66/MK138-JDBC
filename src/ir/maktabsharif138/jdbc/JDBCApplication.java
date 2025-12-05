@@ -1,40 +1,39 @@
 package ir.maktabsharif138.jdbc;
 
+import ir.maktabsharif138.jdbc.util.ApplicationContext;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class JDBCApplication {
 
-    static void main() {
+    static void main() throws SQLException {
 
-        MyObject o = new MyObject();
-
-        a(o);
+        closeWithoutTryWithResource();
+        closeWithTryWithResource();
 
     }
 
-    private static void a(MyObject o) {
-        b(o);
-    }
+    private static void closeWithoutTryWithResource() throws SQLException {
+        Connection connection = null;
 
-    private static void b(MyObject o) {
-        c(o);
-    }
+        try {
+            connection = ApplicationContext.getInstance().getConnection();
 
-    private static void c(MyObject o) {
-        throw o.ex;
-//        throw new RuntimeException();
-    }
 
-    private static void divide(int first, int second) {
-        if (second == 0) {
-            throw new IllegalArgumentException("my custom message");
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
         }
-        System.out.println(first / second);
     }
 
-    static class MyObject {
-        RuntimeException ex;
+    private static void closeWithTryWithResource() {
+        try (Connection connection = ApplicationContext.getInstance().getConnection()) {
 
-        MyObject() {
-            ex = new RuntimeException();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
