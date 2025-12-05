@@ -12,7 +12,7 @@ public class JDBCApplication {
 
         try {
             divide(first, second);
-        } catch (ArithmeticException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("handling exception, can not divide by zero");
         }
 
@@ -21,6 +21,9 @@ public class JDBCApplication {
     }
 
     private static void divide(int first, int second) {
+        if (second == 0) {
+            throw new IllegalArgumentException();
+        }
         System.out.println(first / second);
     }
 }
