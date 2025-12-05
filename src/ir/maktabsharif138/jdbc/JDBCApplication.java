@@ -1,39 +1,28 @@
 package ir.maktabsharif138.jdbc;
 
-import ir.maktabsharif138.jdbc.util.ApplicationContext;
-
-import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Random;
 
 public class JDBCApplication {
 
     static void main() throws SQLException {
 
-        closeWithoutTryWithResource();
-        closeWithTryWithResource();
+        System.out.println(random());
 
     }
 
-    private static void closeWithoutTryWithResource() throws SQLException {
-        Connection connection = null;
-
+    public static int random() {
+        Random random = new Random();
         try {
-            connection = ApplicationContext.getInstance().getConnection();
-
-
-        } finally {
-            if (connection != null) {
-                connection.close();
+            int num = random.nextInt(50, 10000);
+            if (num % 2 == 0) {
+                throw new RuntimeException();
             }
-        }
-    }
-
-    private static void closeWithTryWithResource() {
-        try (Connection connection = ApplicationContext.getInstance().getConnection()) {
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return num;
+        } catch (RuntimeException e) {
+            return 10;
+        } finally {
+            return 0;
         }
     }
 }
