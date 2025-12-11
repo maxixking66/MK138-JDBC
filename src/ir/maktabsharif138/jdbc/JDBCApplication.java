@@ -1,43 +1,38 @@
 package ir.maktabsharif138.jdbc;
 
-import java.sql.SQLException;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class JDBCApplication {
 
-    static void main() throws SQLException {
+    static void main() {
 
-        logic(
-                new A() {
-                    @Override
-                    public void doSomething() {
-                        System.out.println("first");
-                    }
-                }
+        List<String> words = List.of("a", "b", "c");
+
+        words.forEach(new ToUppercasePrintConsumer());
+        words.forEach(new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                System.out.println(s.toLowerCase());
+            }
+        });
+        words.forEach(
+                (varname) -> System.out.println(varname.toLowerCase())
+        );
+        words.forEach(
+                (String myVarName) -> System.out.println(myVarName.toLowerCase())
+        );
+        words.forEach(
+                word -> System.out.println(word.toLowerCase())
         );
 
-        logic(
-                () -> {
-                    System.out.println("second");
-                }
-        );
-
-        logic(() -> System.out.println("third"));
-    }
-
-    static void logic(A a) {
-        a.doSomething();
     }
 }
 
-interface A {
+class ToUppercasePrintConsumer implements Consumer<String> {
 
-    void doSomething();
-
-    default void test() {
-
-    }
-
-    static void doStatic() {
-
+    @Override
+    public void accept(String myVariableName) {
+        System.out.println(myVariableName.toLowerCase());
     }
 }
