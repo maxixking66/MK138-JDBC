@@ -1,6 +1,6 @@
 package ir.maktabsharif138.jdbc;
 
-public interface MyFunctionalInterface {
+public interface MyFunctionalInterface<T> {
 
-    void test(int a, int b);
+    void test(T t);
 }
