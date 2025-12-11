@@ -1,28 +1,43 @@
 package ir.maktabsharif138.jdbc;
 
 import java.sql.SQLException;
-import java.util.Random;
 
 public class JDBCApplication {
 
     static void main() throws SQLException {
 
-        System.out.println(random());
+        logic(
+                new A() {
+                    @Override
+                    public void doSomething() {
+                        System.out.println("first");
+                    }
+                }
+        );
+
+        logic(
+                () -> {
+                    System.out.println("second");
+                }
+        );
+
+        logic(() -> System.out.println("third"));
+    }
+
+    static void logic(A a) {
+        a.doSomething();
+    }
+}
+
+interface A {
+
+    void doSomething();
+
+    default void test() {
 
     }
 
-    public static int random() {
-        Random random = new Random();
-        try {
-            int num = random.nextInt(50, 10000);
-            if (num % 2 == 0) {
-                throw new RuntimeException();
-            }
-            return num;
-        } catch (RuntimeException e) {
-            return 10;
-        } finally {
-            return 0;
-        }
+    static void doStatic() {
+
     }
 }
