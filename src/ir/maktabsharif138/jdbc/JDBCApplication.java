@@ -1,33 +1,38 @@
 package ir.maktabsharif138.jdbc;
 
+import ir.maktabsharif138.jdbc.domains.User;
+
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.function.Function;
 
 public class JDBCApplication {
 
     static void main() {
 
-        MyFunctionalInterface<String> mfi = s -> System.out.println(s.toUpperCase());
-        Consumer<String> consumer = s -> System.out.println(s.toUpperCase());
-//        Predicate<String> predicate = s -> System.out.println(s.toLowerCase());
-//        Predicate<String> predicate = s -> Objects.equals(s, "mohsen");
-        Predicate<String> predicate = s -> {
-            System.out.println(s.toUpperCase());
-            return Objects.equals(s, "mohsen");
+//        Consumer
+//        Predicate
+//        Function
+        Function<User, Integer> userToIdFunction = u -> {
+            Objects.requireNonNull(u);
+            return u.getId();
         };
 
-        Predicate<String> greaterThanTenLength = w -> w.length() > 10;
+        User f = new User();
+        f.setId(15);
+        f.setUsername("mat");
 
-        System.out.println("mat predicate: " + greaterThanTenLength.test("mat"));
-        System.out.println("mohsen predicate: " + greaterThanTenLength.test("mohsen"));
-        System.out.println("mohsen asgari predicate: " + greaterThanTenLength.test("mohsen asgari"));
+        Integer apply1 = userToIdFunction.apply(f);
 
-        Predicate<Integer> greaterThanTen = num -> num > 10;
+        System.out.println(userToIdFunction.apply(f));
 
-        System.out.println("0 predicate: " + greaterThanTen.test(0));
-        System.out.println("50 predicate: " + greaterThanTen.test(50));
-        System.out.println("50 predicate: " + (50 > 10));
-        System.out.println("11 asgari predicate: " + greaterThanTen.test(11));
+        User s = new User();
+        s.setId(20);
+        System.out.println(userToIdFunction.apply(s));
+
+        Function<User, String> userToUsernameFunction = u -> u.getUsername();
+        String apply = userToUsernameFunction.apply(f);
+
+        System.out.println(userToUsernameFunction.apply(f));
+
     }
 }
