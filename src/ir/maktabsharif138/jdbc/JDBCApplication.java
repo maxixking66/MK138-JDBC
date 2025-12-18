@@ -5,20 +5,35 @@ import ir.maktabsharif138.jdbc.domains.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class JDBCApplication {
 
     static void main() {
 
         List<String> words = new ArrayList<>();
-        words.add("1");
-        words.add("2");
-        words.add("3");
-        words.add("4");
-        words.add("3");
-        words.add("2");
+        words.add("1111");
+        words.add("222");
+        words.add("333");
+        words.add("444");
+        words.add("333");
+        words.add("255");
 
-        words.stream().distinct().peek(System.out::println).limit(1).forEach(System.out::println);
+        long count = words.stream().distinct().count();
+        System.out.println(count);
+
+        Collection<User> users = getRandomUsers();
+
+        Map<Integer, User> userIdMap = users.stream().collect(
+                Collectors.toMap(
+                        User::getId, Function.identity()
+                )
+        );
+        System.out.println(userIdMap);
+
+
     }
 
     private static void sendSms(String number) {
@@ -32,7 +47,12 @@ public class JDBCApplication {
     }
 
     private static Collection<User> getRandomUsers() {
-        return List.of();
+        return List.of(
+                new User(1),
+                new User(2),
+                new User(3),
+                new User(4)
+        );
     }
 }
 

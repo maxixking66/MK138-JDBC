@@ -21,9 +21,14 @@ public class User extends BaseDomain {
         super();
     }
 
-    public User(Integer age) {
-        this.age = age;
+    public User(Integer id) {
+        super();
+        setId(id);
     }
+
+//    public User(Integer age) {
+//        this.age = age;
+//    }
 
     public String getUsername() {
         return username;
