@@ -11,6 +11,8 @@ public class User extends BaseDomain {
 
     private Integer age;
 
+    private Boolean isActive;
+
     public User() {
         super();
     }
@@ -42,5 +44,18 @@ public class User extends BaseDomain {
                ", username='" + username + '\'' +
                ", age=" + age +
                '}';
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public User setIsActive(Boolean active) {
+        this.isActive = active;
+        return this;
     }
 }
