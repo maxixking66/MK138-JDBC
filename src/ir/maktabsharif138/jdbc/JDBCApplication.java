@@ -5,33 +5,38 @@ import ir.maktabsharif138.jdbc.domains.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class JDBCApplication {
 
     static void main() {
 
         List<String> words = new ArrayList<>();
-        words.add("1111");
+        words.add("111");
         words.add("222");
         words.add("333");
         words.add("444");
-        words.add("333");
-        words.add("255");
 
-        long count = words.stream().distinct().count();
-        System.out.println(count);
-
-        Collection<User> users = getRandomUsers();
-
-        Map<Integer, User> userIdMap = users.stream().collect(
-                Collectors.toMap(
-                        User::getId, Function.identity()
-                )
+        System.out.println(
+                words.stream().reduce("hello", (aggregatedVal, elem) -> {
+                    System.out.println("aggregatedVal: " + aggregatedVal);
+                    System.out.println("elem: " + elem);
+                    String result = aggregatedVal + " # " + elem;
+                    System.out.println("iteration result: " + result);
+                    System.out.println("-----------------------");
+                    return result;
+                })
         );
-        System.out.println(userIdMap);
+
+        System.out.println(
+                words.stream().reduce((aggregatedVal, elem) -> {
+                    System.out.println("aggregatedVal: " + aggregatedVal);
+                    System.out.println("elem: " + elem);
+                    String result = aggregatedVal + " # " + elem;
+                    System.out.println("iteration result: " + result);
+                    System.out.println("-----------------------");
+                    return result;
+                })
+        );
 
 
     }
