@@ -1,5 +1,10 @@
 package ir.maktabsharif138.jdbc;
 
+import ir.maktabsharif138.jdbc.domains.User;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -7,16 +12,23 @@ public class JDBCApplication {
 
     static void main() {
 
-        List<Integer> numbers = getRandomNumbers();
+        Collection<User> users = getRandomUsers();
 
-        Stream<Integer> stream = numbers.stream();
-        Stream<Integer> filterStream = stream.filter(num -> {
-            System.out.println("in filter method for num: " + num);
-            return num % 2 == 0;
-        });
-        List<Integer> filteredList = filterStream.toList();
+//        u -> u.getId()
 
-        System.out.println(filteredList);
+
+        Stream<String> stringStream = users.stream().flatMap(u -> Stream.of(u.getPrimaryMobileNumber(), u.getSecondaryMobileNumber()));
+
+        List<String> texts = new ArrayList<>();
+        texts.add("my name is mohsen");
+        texts.add("my family is asgari");
+        texts.add("my age is 32 50 60");
+
+        texts.stream().flatMap(t -> Arrays.stream(t.split(" "))).forEach(System.out::println);
+    }
+
+    private static void sendSms(String number) {
+
     }
 
     private static List<Integer> getRandomNumbers() {
@@ -24,4 +36,9 @@ public class JDBCApplication {
                 1, 2, 3, 4, 6, 8, 9
         );
     }
+
+    private static Collection<User> getRandomUsers() {
+        return List.of();
+    }
 }
+

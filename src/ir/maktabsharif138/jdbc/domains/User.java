@@ -13,6 +13,10 @@ public class User extends BaseDomain {
 
     private Boolean isActive;
 
+    private String primaryMobileNumber;
+
+    private String secondaryMobileNumber;
+
     public User() {
         super();
     }
@@ -57,5 +61,21 @@ public class User extends BaseDomain {
     public User setIsActive(Boolean active) {
         this.isActive = active;
         return this;
+    }
+
+    public String getPrimaryMobileNumber() {
+        return primaryMobileNumber;
+    }
+
+    public void setPrimaryMobileNumber(String primaryMobileNumber) {
+        this.primaryMobileNumber = primaryMobileNumber;
+    }
+
+    public String getSecondaryMobileNumber() {
+        return secondaryMobileNumber;
+    }
+
+    public void setSecondaryMobileNumber(String secondaryMobileNumber) {
+        this.secondaryMobileNumber = secondaryMobileNumber;
     }
 }
