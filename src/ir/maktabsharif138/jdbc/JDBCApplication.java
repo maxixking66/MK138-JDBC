@@ -1,6 +1,5 @@
 package ir.maktabsharif138.jdbc;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -10,25 +9,12 @@ public class JDBCApplication {
 
         List<Integer> numbers = getRandomNumbers();
 
-        List<Integer> filteredNumbers = new ArrayList<>();
-
-        numbers.forEach(num -> {
-            if (num % 2 == 0) {
-                filteredNumbers.add(num);
-            }
-        });
-        System.out.println(filteredNumbers);
-
-//        numbers.stream().filter(num -> {
-//            if (num % 2 == 0) {
-//                return true;
-//            }
-//            return false;
-//        })
         Stream<Integer> stream = numbers.stream();
-        List<Integer> filteredList = stream
-                .filter(num -> num % 2 == 0)
-                .toList();
+        Stream<Integer> filterStream = stream.filter(num -> {
+            System.out.println("in filter method for num: " + num);
+            return num % 2 == 0;
+        });
+        List<Integer> filteredList = filterStream.toList();
 
         System.out.println(filteredList);
     }
