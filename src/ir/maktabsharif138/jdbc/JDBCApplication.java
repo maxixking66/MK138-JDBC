@@ -5,39 +5,45 @@ import ir.maktabsharif138.jdbc.domains.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class JDBCApplication {
 
     static void main() {
 
-        List<String> words = new ArrayList<>();
-        words.add("111");
-        words.add("222");
-        words.add("333");
-        words.add("444");
+        List<String> names = new ArrayList<>();
+        names.add("mat");
+        names.add("tom");
+        names.add("tommy");
+        names.add("katy");
+        names.add("sara");
+        names.add("sam");
+        names.add("samy");
+        names.add("amy");
+        names.add("mohsen");
+        names.add("keyvan");
+        names.add("keyvan11");
 
-        System.out.println(
-                words.stream().reduce("hello", (aggregatedVal, elem) -> {
-                    System.out.println("aggregatedVal: " + aggregatedVal);
-                    System.out.println("elem: " + elem);
-                    String result = aggregatedVal + " # " + elem;
-                    System.out.println("iteration result: " + result);
-                    System.out.println("-----------------------");
-                    return result;
-                })
+
+//        3 -> mat, tom, sam, amy
+//        4 -> kay, sara, samy
+//        5 -> tommy
+//        6 -> mohsen, keyvan
+
+        Map<Integer, String> map = names.stream().collect(
+                Collectors.toMap(String::length, k -> k, (oldValue, newValue) -> oldValue + "," + newValue)
         );
 
-        System.out.println(
-                words.stream().reduce((aggregatedVal, elem) -> {
-                    System.out.println("aggregatedVal: " + aggregatedVal);
-                    System.out.println("elem: " + elem);
-                    String result = aggregatedVal + " # " + elem;
-                    System.out.println("iteration result: " + result);
-                    System.out.println("-----------------------");
-                    return result;
-                })
-        );
+        System.out.println(map);
 
+        Map<Integer, List<String>> collect = names.stream().collect(Collectors.groupingBy(String::length));
+
+        System.out.println(collect);
+
+        System.out.println(
+                collect.entrySet().stream().collect(Collectors.groupingBy(e -> e.getValue().size()))
+        );
 
     }
 
