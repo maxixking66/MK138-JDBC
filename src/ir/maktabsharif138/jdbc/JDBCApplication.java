@@ -1,152 +1,50 @@
 package ir.maktabsharif138.jdbc;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-
 public class JDBCApplication {
-
-    static Map<Integer, Branch> branchMap = new HashMap<>();
 
     static void main() {
 
-//        Consumer
-//        Predicate
-//        Function
-//        Supplier
+        Printer first = (String word) -> {
+            System.out.println(word);
+        };
 
-//        method reference
+        Printer second = (word) -> {
+            System.out.println(word);
+        };
 
-        List<AccountInfo> accountList = fetchAccounts();
+        Printer third = word -> System.out.println(word);
 
+        Printer forth = System.out::println;
 
-        accountList.forEach(accountInfo -> {
+        NoArg fifth = System.out::println;
 
-            accountInfo.branch = computeIfAbsent(
-                    accountInfo.branch.id,
-//                    id -> getById(id)
-                    JDBCApplication::getById
-            );
+//        DoubleArg doubleArg = new DoubleArg() {
+//            @Override
+//            public void print(String first, String second) {
+//                JDBCApplication.logic(first, second);
+//            }
+//        };
 
-        });
-
-//        fill branch information
-
-        System.out.println(accountList);
+        DoubleArg doubleArg = JDBCApplication::logic;
     }
 
-    static Branch computeIfAbsent(Integer key, Function<Integer, Branch> mappingFunction) {
-        Objects.requireNonNull(mappingFunction);
-        Branch v;
-        if ((v = branchMap.get(key)) == null) {
-            Branch newValue;
-            if ((newValue = mappingFunction.apply(key)) != null) {
-                branchMap.put(key, newValue);
-                return newValue;
-            }
-        }
+    public static void logic(String first, String second) {
 
-        return v;
-    }
-
-    static Branch getOrDefault(Branch branch, BranchSupplier supplier) {
-        if (branch != null) {
-            return branch;
-        }
-        return supplier.get();
-    }
-
-    static Branch getById(Integer branchId) {
-        System.out.println("invoking very slow api for branch: " + branchId);
-        Branch branch = new Branch();
-        branch.id = branchId;
-        branch.code = branchId + "";
-        branch.name = branchId + "";
-        return branch;
-    }
-
-
-    private static List<AccountInfo> fetchAccounts() {
-        return List.of(
-                new AccountInfo(
-                        "1",
-                        new Branch(1)
-                ),
-                new AccountInfo(
-                        "2",
-                        new Branch(2)
-                ),
-                new AccountInfo(
-                        "3",
-                        new Branch(1)
-                ),
-                new AccountInfo(
-                        "4",
-                        new Branch(4)
-                ),
-                new AccountInfo(
-                        "5",
-                        new Branch(2)
-                )
-        );
     }
 }
 
-class AccountInfo {
-    String accountNumber;
-    Branch branch;
-
-    public AccountInfo(String accountNumber, Branch branch) {
-        this.accountNumber = accountNumber;
-        this.branch = branch;
-    }
-
-    @Override
-    public String toString() {
-        return "AccountInfo{" +
-               "accountNumber='" + accountNumber + '\'' +
-               ", branch=" + branch +
-               '}';
-    }
+interface DoubleArg {
+    void print(String first, String second);
 }
 
-class Branch {
-    Integer id;
-    String code;
-    String name;
 
-    public Branch() {
-    }
+interface Printer {
 
-    public Branch(Integer id) {
-        this.id = id;
-    }
+    void print(String s);
 
-    @Override
-    public String toString() {
-        return "Branch{" +
-               "id=" + id +
-               ", code='" + code + '\'' +
-               ", name='" + name + '\'' +
-               '}';
-    }
 }
 
-class BranchSupplier {
-    int branchId;
+interface NoArg {
+    void print();
 
-    BranchSupplier(int branchId) {
-        this.branchId = branchId;
-    }
-
-    Branch get() {
-        System.out.println("invoking very slow api for branch: " + branchId);
-        Branch branch = new Branch();
-        branch.id = branchId;
-        branch.code = branchId + "";
-        branch.name = branchId + "";
-        return branch;
-    }
 }
