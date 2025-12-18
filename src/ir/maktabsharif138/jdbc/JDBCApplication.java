@@ -1,6 +1,5 @@
 package ir.maktabsharif138.jdbc;
 
-import ir.maktabsharif138.jdbc.util.LastIndexFinder;
 import ir.maktabsharif138.jdbc.util.StringUtils;
 
 public class JDBCApplication {
@@ -10,9 +9,15 @@ public class JDBCApplication {
 
     static void main() {
 
+        CharToStringFactory factory = (chars) -> {
+            return new String(chars);
+        };
 
-//        LastIndexFinder finder = (s1, s2) -> stInstance.findLastIndexOfNonStatic(s1, s2);
-        LastIndexFinder finder = stInstance::findLastIndexOfNonStatic;
+        CharToStringFactory factory1 = String::new;
 
     }
+}
+
+interface CharToStringFactory {
+    String create(char[] chars);
 }
