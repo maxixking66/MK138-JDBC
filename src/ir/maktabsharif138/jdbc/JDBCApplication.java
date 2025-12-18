@@ -3,28 +3,22 @@ package ir.maktabsharif138.jdbc;
 import ir.maktabsharif138.jdbc.domains.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class JDBCApplication {
 
     static void main() {
 
-        Collection<User> users = getRandomUsers();
+        List<String> words = new ArrayList<>();
+        words.add("1");
+        words.add("2");
+        words.add("3");
+        words.add("4");
+        words.add("3");
+        words.add("2");
 
-//        u -> u.getId()
-
-
-        Stream<String> stringStream = users.stream().flatMap(u -> Stream.of(u.getPrimaryMobileNumber(), u.getSecondaryMobileNumber()));
-
-        List<String> texts = new ArrayList<>();
-        texts.add("my name is mohsen");
-        texts.add("my family is asgari");
-        texts.add("my age is 32 50 60");
-
-        texts.stream().flatMap(t -> Arrays.stream(t.split(" "))).forEach(System.out::println);
+        words.stream().distinct().peek(System.out::println).limit(1).forEach(System.out::println);
     }
 
     private static void sendSms(String number) {
