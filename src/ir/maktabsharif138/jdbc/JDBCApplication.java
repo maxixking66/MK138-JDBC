@@ -11,8 +11,8 @@ public class JDBCApplication {
         };
         LastIndexFinder ssss = String::compareTo;
 
-        A a = (B b, C c) -> {
-            return b.logic(c);
+        A a = (B b) -> {
+            return b.logic();
         };
 
         A a1 = B::logic;
@@ -22,14 +22,11 @@ public class JDBCApplication {
 }
 
 interface A {
-    float test(B b, C c);
+    float test(B b);
 }
 
 class B {
-    float logic(C c) {
+    float logic() {
         return 58.5f;
     }
-}
-
-class C {
 }
