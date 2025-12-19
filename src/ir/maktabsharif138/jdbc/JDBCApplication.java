@@ -1,18 +1,33 @@
 package ir.maktabsharif138.jdbc;
 
-import ir.maktabsharif138.jdbc.domains.BaseEntity;
+import ir.maktabsharif138.jdbc.util.CollectionUtils;
+
+import java.util.*;
 
 public class JDBCApplication {
 
     static void main() {
 
-        BaseEntity<Byte> byteInstance = new BaseEntity<>();
-        byteInstance.setId((byte) 1);
-        Byte id = byteInstance.getId();
+        List<Integer> numbers = new ArrayList<>();
 
-        BaseEntity<Long> longInstance = new BaseEntity<>();
-        longInstance.setId(1L);
-        Long id1 = longInstance.getId();
+        Set<Integer> words = new HashSet<>();
+
+        Collection<Number> numbers1 = new LinkedHashSet<>();
+        Collection<Object> objects = new HashSet<>();
+
+        CollectionUtils.addAndReturn(1, numbers);
+        CollectionUtils.addAndReturn(2, numbers);
+
+        CollectionUtils.addAndReturn(3, words);
+
+        CollectionUtils.addAndReturn(4, numbers1);
+        CollectionUtils.addAndReturn(4.5D, numbers1);
+        CollectionUtils.addAndReturn(5, objects);
+
+
+        System.out.println(numbers);
+
+
     }
 
     public static void put(String key, Long value) {
