@@ -1,7 +1,7 @@
 package ir.maktabsharif138.jdbc.domains;
 
 //  T, E, K, V, U, S
-public class BaseEntity<T> {
+public class BaseEntity<T extends Number> {
 
     private T id;
 
