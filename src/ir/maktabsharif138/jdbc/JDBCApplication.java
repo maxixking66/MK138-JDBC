@@ -17,6 +17,11 @@ public class JDBCApplication {
         printElementsOfCollection(aList);
         printElementsOfCollection(bList);
 
+        insert(new ArrayList<Object>());
+        insert(new ArrayList<X>());
+//        insert(new ArrayList<Y>());
+        insert(new ArrayList<A>());
+
     }
 
     static void printElementsOfCollection(List<?> objects) {
@@ -36,6 +41,8 @@ public class JDBCApplication {
         aList.add(new B());
         aList.add(new C());
 
+//        aList.add(new X()); illegal
+
         Object object = aList.get(0);
     }
 
@@ -50,7 +57,11 @@ class X {
 
 }
 
-class A extends X {
+interface Y {
+
+}
+
+class A extends X implements Y {
     public void test() {
     }
 }
